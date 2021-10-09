@@ -5,8 +5,9 @@ namespace ThenLabs\TaskLoop;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
+ * @abstract
  */
-interface TaskInterface
+abstract class AbstractTask implements TaskInterface
 {
-    public function run(): void;
+    use TaskLoopTrait;
 }

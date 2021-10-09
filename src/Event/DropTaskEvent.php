@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace ThenLabs\TaskLoop;
+namespace ThenLabs\TaskLoop\Event;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-interface TaskInterface
+class DropTaskEvent extends Event
 {
-    public function run(): void;
 }

@@ -1,5 +1,5 @@
 {
-    "name": "thenlabs/loop",
+    "name": "thenlabs/task-loop",
     "license": "MIT",
     "authors": [
         {
@@ -16,12 +16,12 @@
     },
     "autoload": {
         "psr-4": {
-            "ThenLabs\\Loop\\": "src/"
+            "ThenLabs\\TaskLoop\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ThenLabs\\Loop\\Tests\\": "tests/"
+            "ThenLabs\\TaskLoop\\Tests\\": "tests/"
         }
     }
 }
