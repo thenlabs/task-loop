@@ -3,6 +3,10 @@
 
 A PHP implementation of a bare task loop.
 
+## Installation.
+
+    $ composer require thenlabs/task-loop 1.0.x-dev
+
 ## Usage.
 
 The file `example.php` contains the below code which show that once the loop is started, it will runs each one of his tasks.
