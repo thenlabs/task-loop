@@ -5,7 +5,7 @@ A PHP implementation of a bare task loop.
 
 ## Installation.
 
-    $ composer require thenlabs/task-loop 1.0.x-dev
+    $ composer require thenlabs/task-loop
 
 ## Usage.
 
