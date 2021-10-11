@@ -1,11 +1,11 @@
 <?php
 
 use ThenLabs\TaskLoop\AbstractTask;
-use ThenLabs\TaskLoop\TaskLoop;
-use ThenLabs\TaskLoop\TaskInterface;
 use ThenLabs\TaskLoop\Event\AddTaskEvent;
-use ThenLabs\TaskLoop\Event\RunTaskEvent;
 use ThenLabs\TaskLoop\Event\DropTaskEvent;
+use ThenLabs\TaskLoop\Event\RunTaskEvent;
+use ThenLabs\TaskLoop\TaskInterface;
+use ThenLabs\TaskLoop\TaskLoop;
 
 testCase(function () {
     setUp(function () {
@@ -48,7 +48,6 @@ testCase(function () {
 
     test(function () {
         $task1 = new class($this->loop) implements TaskInterface {
-
             public $invokations = [];
             protected $loop;
 
@@ -64,7 +63,6 @@ testCase(function () {
         };
 
         $task2 = new class($this->loop) implements TaskInterface {
-
             public $invokations = [];
             protected $loop;
 
@@ -112,7 +110,6 @@ testCase(function () {
         });
 
         $this->loop->addTask($task = new class implements TaskInterface {
-
             public $executed = false;
 
             public function run(): void
@@ -155,7 +152,6 @@ testCase(function () {
 
     test(function () {
         $task = new class extends AbstractTask {
-
             protected $counter = 0;
 
             public function run(): void
