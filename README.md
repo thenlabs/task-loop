@@ -3,6 +3,8 @@
 
 A PHP implementation of a bare task loop.
 
+>If you like this project gift us a ⭐.
+
 ## Installation.
 
     $ composer require thenlabs/task-loop
