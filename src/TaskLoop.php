@@ -5,6 +5,7 @@ namespace ThenLabs\TaskLoop;
 
 use SplObjectStorage;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use TypeError;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -42,8 +43,20 @@ class TaskLoop
         return $this->tasks;
     }
 
-    public function addTask(TaskInterface $task): void
+    /**
+     * @param TaskInterface|callable $task
+     * @return void
+     */
+    public function addTask($task): void
     {
+        if (! $task instanceof TaskInterface) {
+            if (is_callable($task)) {
+                $task = new CallableTask($task);
+            } else {
+                throw new TypeError('The task argument should be an instance of TaskInterface or a callable.');
+            }
+        }
+
         $event = new Event\AddTaskEvent($task);
         $this->dispatcher->dispatch($event);
 

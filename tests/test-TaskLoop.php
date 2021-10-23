@@ -17,6 +17,12 @@ testCase(function () {
     });
 
     test(function () {
+        $this->expectException(TypeError::class);
+
+        $this->loop->addTask(uniqid());
+    });
+
+    test(function () {
         $task1 = $this->getMockBuilder(TaskInterface::class)
             ->setMethods(['run'])
             ->getMock();
@@ -88,6 +94,19 @@ testCase(function () {
 
         $this->assertCount(3, $task1->invokations);
         $this->assertCount(3, $task2->invokations);
+    });
+
+    test(function () {
+        $executed = false;
+
+        $this->loop->addTask(function ($task) use (&$executed) {
+            $executed = true;
+            $task->end();
+        });
+
+        $this->loop->runTasks();
+
+        $this->assertCount(0, $this->loop->getTasks());
     });
 
     test(function () {
