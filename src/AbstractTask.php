@@ -9,5 +9,23 @@ namespace ThenLabs\TaskLoop;
  */
 abstract class AbstractTask implements TaskInterface
 {
-    use TaskLoopTrait;
+    /**
+     * @var TaskLoop
+     */
+    protected $loop;
+
+    public function getTaskLoop(): TaskLoop
+    {
+        return $this->loop;
+    }
+
+    public function setTaskLoop(TaskLoop $loop): void
+    {
+        $this->loop = $loop;
+    }
+
+    public function end(): void
+    {
+        $this->loop->dropTask($this);
+    }
 }
