@@ -5,7 +5,7 @@ A PHP implementation of a bare task loop.
 
 ## Installation.
 
-    $ composer require thenlabs/task-loop 1.0.x-dev
+    $ composer require thenlabs/task-loop
 
 ## Usage.
 
@@ -13,14 +13,14 @@ The file `example.php` contains the below code which show that once the loop is 
 
 Each loop iteration is executed with a time interval which it's specified with the `start()` method.
 
-Like can be seen, for create the tasks exists the class `ThenLabs\TaskLoop\AbstractTask` which has some useful methods, but any instance of the interface `ThenLabs\TaskLoop\TaskInterface` may be considered as a task.
+A task can be a `callable` or an object which implements the `ThenLabs\TaskLoop\TaskInterface` interface.
 
 ```php
 <?php
 
 require_once __DIR__.'/vendor/autoload.php';
 
-use ThenLabs\TaskLoop\{AbstractTask, TaskLoop};
+use ThenLabs\TaskLoop\{TaskLoop, CallableTask};
 
 define('DATE_FORMAT', 'Y-m-d H:i:s');
 
@@ -28,40 +28,32 @@ define('DATE_FORMAT', 'Y-m-d H:i:s');
 $loop = new TaskLoop();
 
 // adds the task1.
-$loop->addTask(new class extends AbstractTask {
+$loop->addTask(function (CallableTask $task) {
+    static $counter = 10;
 
-    protected $counter = 10;
+    echo date(DATE_FORMAT)." Task1: {$counter}\n";
+    $counter--;
 
-    public function run(): void
-    {
-        echo date(DATE_FORMAT)." Task1: {$this->counter}\n";
-        $this->counter--;
+    if ($counter <= 0) {
+        echo date(DATE_FORMAT)." Task1: End\n\n";
 
-        if ($this->counter <= 0) {
-            echo date(DATE_FORMAT)." Task1: End\n\n";
-
-            // when task1 ends, the loop will be stopped.
-            $this->loop->stop();
-        }
+        // when task1 ends, the loop will be stopped.
+        $task->getTaskLoop()->stop();
     }
 });
 
 // adds the task2.
-$loop->addTask(new class extends AbstractTask {
+$loop->addTask(function (CallableTask $task) {
+    static $counter = 5;
 
-    protected $counter = 5;
+    echo date(DATE_FORMAT)." Task2: {$counter}\n";
+    $counter--;
 
-    public function run(): void
-    {
-        echo date(DATE_FORMAT)." Task2: {$this->counter}\n";
-        $this->counter--;
+    if ($counter <= 0) {
+        echo date(DATE_FORMAT)." Task2: End\n\n";
 
-        if ($this->counter <= 0) {
-            echo date(DATE_FORMAT)." Task2: End\n\n";
-
-            // when task2 ends, will be dropped from the loop.
-            $this->loop->dropTask($this);
-        }
+        // when task2 ends, will be dropped from the loop.
+        $task->end();
     }
 });
 
