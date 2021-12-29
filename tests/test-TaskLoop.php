@@ -1,7 +1,7 @@
 <?php
 
 use ThenLabs\TaskLoop\AbstractTask;
-use ThenLabs\TaskLoop\Event\AddTaskEvent;
+use ThenLabs\TaskLoop\Event\NewTaskEvent;
 use ThenLabs\TaskLoop\Event\DropTaskEvent;
 use ThenLabs\TaskLoop\Event\RunTaskEvent;
 use ThenLabs\TaskLoop\TaskInterface;
@@ -144,7 +144,7 @@ testCase(function () {
     });
 
     test(function () {
-        $this->loop->getDispatcher()->addListener(AddTaskEvent::class, function (AddTaskEvent $event) {
+        $this->loop->getDispatcher()->addListener(NewTaskEvent::class, function (NewTaskEvent $event) {
             $event->getTask()->added = new DateTime();
         });
 
@@ -157,7 +157,7 @@ testCase(function () {
     });
 
     test(function () {
-        $this->loop->getDispatcher()->addListener(AddTaskEvent::class, function ($event) {
+        $this->loop->getDispatcher()->addListener(NewTaskEvent::class, function ($event) {
             $event->setCancelled(true);
         });
 

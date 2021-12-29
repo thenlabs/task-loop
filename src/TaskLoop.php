@@ -57,7 +57,7 @@ class TaskLoop
             }
         }
 
-        $event = new Event\AddTaskEvent($task);
+        $event = new Event\NewTaskEvent($task);
         $this->dispatcher->dispatch($event);
 
         if ($event->isCancelled()) {

@@ -23,5 +23,8 @@
         "psr-4": {
             "ThenLabs\\TaskLoop\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "./vendor/bin/pyramidal"
     }
 }
