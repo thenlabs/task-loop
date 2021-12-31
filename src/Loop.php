@@ -113,7 +113,7 @@ class Loop
 
             $this->tasks->next();
 
-            if (null === $this->tasks->current()) {
+            if (! $this->tasks->valid()) {
                 $this->tasks->rewind();
             }
         }
