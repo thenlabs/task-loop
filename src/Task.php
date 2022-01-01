@@ -26,6 +26,21 @@ class Task
      */
     protected $conditions = [];
 
+    /**
+     * @var bool
+     */
+    protected $started = false;
+
+    /**
+     * @var bool
+     */
+    protected $ended = false;
+
+    /**
+     * @var mixed
+     */
+    protected $result;
+
     public function __construct(Loop $loop, callable $callable)
     {
         $this->loop = $loop;
@@ -51,10 +66,18 @@ class Task
         $dispatcher->dispatch($event);
 
         $this->loop->dropTask($this);
+
+        $this->started = false;
+        $this->ended = true;
+        $this->result = $result;
     }
 
     public function run(...$arguments)
     {
+        if (! $this->started) {
+            $this->started = true;
+        }
+
         foreach ($this->getUnfulfilledConditions() as $condition) {
             $condition->update();
 
@@ -88,9 +111,16 @@ class Task
 
             $this->callable = $generator;
 
-            return $generator->current();
+            $this->result = $generator->current();
+            return $this->result;
         } else {
-            return $result;
+            if ($this->ended) {
+                return $this->result;
+            } else {
+                $this->result = $result;
+
+                return $result;
+            }
         }
     }
 
@@ -120,5 +150,20 @@ class Task
         }
 
         return $result;
+    }
+
+    public function isStarted(): bool
+    {
+        return $this->started;
+    }
+
+    public function isEnded(): bool
+    {
+        return $this->ended;
+    }
+
+    public function getResult()
+    {
+        return $this->result;
     }
 }

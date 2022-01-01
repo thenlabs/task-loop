@@ -163,6 +163,18 @@ testCase(function () {
         $this->assertEmpty($this->task->getUnfulfilledConditions());
     });
 
+    test(function () {
+        $this->assertFalse($this->task->isStarted());
+    });
+
+    test(function () {
+        $this->assertFalse($this->task->isEnded());
+    });
+
+    test(function () {
+        $this->assertNull($this->task->getResult());
+    });
+
     testCase(function () {
         setUp(function () {
             $this->unfulfilledCondition = $this->createMock(AbstractCondition::class);
@@ -191,5 +203,54 @@ testCase(function () {
 
             $this->assertSame($expected, $this->task->getUnfulfilledConditions());
         });
+    });
+});
+
+testCase(function () {
+    test(function () {
+        $this->counter = 0;
+
+        $this->task = new Task(new Loop(), function ($task) {
+            $this->counter++;
+
+            if ($this->counter === 3) {
+                $task->end($this->counter);
+            } else {
+                return $this->counter;
+            }
+        });
+
+        $this->checkAsserts();
+    });
+
+    test(function () {
+        $this->task = new Task(new Loop(), function () {
+            yield 1;
+            yield 2;
+            return 3;
+        });
+
+        $this->checkAsserts();
+    });
+
+    method('checkAsserts', function () {
+        $this->assertSame(null, $this->task->getResult());
+        $this->assertFalse($this->task->isStarted());
+        $this->assertFalse($this->task->isEnded());
+
+        $this->task->run();
+        $this->assertSame(1, $this->task->getResult());
+        $this->assertTrue($this->task->isStarted());
+        $this->assertFalse($this->task->isEnded());
+
+        $this->task->run();
+        $this->assertSame(2, $this->task->getResult());
+        $this->assertTrue($this->task->isStarted());
+        $this->assertFalse($this->task->isEnded());
+
+        $this->task->run();
+        $this->assertSame(3, $this->task->getResult());
+        $this->assertFalse($this->task->isStarted());
+        $this->assertTrue($this->task->isEnded());
     });
 });
