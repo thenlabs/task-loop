@@ -5,6 +5,7 @@ namespace ThenLabs\TaskLoop;
 
 use Generator;
 use ThenLabs\TaskLoop\Condition\AbstractCondition;
+use ThenLabs\TaskLoop\Condition\TimeInterval;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -165,5 +166,10 @@ class Task
     public function getResult()
     {
         return $this->result;
+    }
+
+    public function addDelay(string $value): void
+    {
+        $this->addCondition(new TimeInterval($value));
     }
 }

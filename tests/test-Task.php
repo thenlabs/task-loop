@@ -175,6 +175,19 @@ testCase(function () {
         $this->assertNull($this->task->getResult());
     });
 
+    test(function () {
+        $modify = '+1 day';
+
+        $this->task->addDelay($modify);
+
+        $condition = $this->task->getConditions()[0];
+
+        $this->assertEquals(
+            (new DateTime())->modify($modify)->format('d'),
+            $condition->getDateTime()->format('d')
+        );
+    });
+
     testCase(function () {
         setUp(function () {
             $this->unfulfilledCondition = $this->createMock(AbstractCondition::class);
