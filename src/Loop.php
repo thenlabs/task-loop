@@ -106,16 +106,16 @@ class Loop
 
     public function runOne(): void
     {
+        if (! $this->tasks->valid()) {
+            $this->tasks->rewind();
+        }
+
         $task = $this->tasks->current();
 
         if ($task instanceof Task) {
             $this->runTask($task);
 
             $this->tasks->next();
-
-            if (! $this->tasks->valid()) {
-                $this->tasks->rewind();
-            }
         }
     }
 
